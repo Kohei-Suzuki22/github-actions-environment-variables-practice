@@ -11,15 +11,22 @@ env:
   MONGODB_DB_NAME: gha-demo
 jobs:
   test:
+    # environment: # githubのsettings > environementsで定義した名前をvalueで指定できる。
+    # https://github.com/Kohei-Suzuki22/github-actions-environment-variables-practice/settings/environments/844832058/edit
+    # githubで、「Environment secrets」として定義される。
+    # 各値ごとに、異なる環境変数、シークレット変数を定義することができるため、
+    # 例えば、environement: testing 内では、MONGODB_PASSWORDの値を「hello」と定義し、 nvironement: product ないでは、MONGODB_PASSWORDの値を「hi」と
+    # 定義したりできる。
+    # 別jobでも同じenvironment名を使うこともできる。
+    environment: testing
     env:
       MONGODB_CLUSTER_ADDRESS: cluster0.n4hxgy4.mongodb.net
       # githubで定義したシークレット変数を使う時は、${{ secrets.XXX }}を使う。
+      # githubで、「Repository secrets」として定義される。
       # シークレット変数は、github actions内のワークフローのログでも暗号化されて見えないようになっている。
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
-    # envirinent: これ何？
-    environment: testing
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
