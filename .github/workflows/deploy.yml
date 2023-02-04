@@ -2,10 +2,21 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - master
       - dev
+# env: 環境変数のkeyとvalueを定義できる。すべてのワークフローで使用できる。
+# jobごとにvalueを変えて定義することにより、envの値を上書きすることもできる。
+# stepごとに定義することもできる。
+env:
+  MONGODB_DB_NAME: gha-demo
 jobs:
   test:
+    env:
+      MONGODB_CLUSTER_ADDRESS: cluster0.n4hxgy4.mongodb.net
+      MONGODB_USERNAME: KoheiSuzuki
+      MONGODB_PASSWORD: kHqSinY9QFv2W4mj
+      PORT: 8080
+    # envirinent: これ何？
     environment: testing
     runs-on: ubuntu-latest
     steps:
@@ -19,15 +30,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run server
-        run: npm start & npx wait-on http://127.0.0.1:XYZ
+        # envの値をrunの中で使うときは、shellと同様「$」で使える。
+        # また、$ではなく、「${{ env.XXX }}」でも呼び出せる。
+        run: npm start & npx wait-on http://127.0.0.1:$PORT
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "..."
+        run: |
+          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |
-          echo "..."
+          echo "MONGODB_USERNAME: ${{ env.MONGODB_USERNAME }}"
+          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
