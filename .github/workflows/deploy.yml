@@ -2,6 +2,7 @@ name: Deployment
 on:
   push:
     branches:
+      - main
       - master
       - dev
 # env: 環境変数のkeyとvalueを定義できる。すべてのワークフローで使用できる。
