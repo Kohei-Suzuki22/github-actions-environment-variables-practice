@@ -13,8 +13,10 @@ jobs:
   test:
     env:
       MONGODB_CLUSTER_ADDRESS: cluster0.n4hxgy4.mongodb.net
-      MONGODB_USERNAME: KoheiSuzuki
-      MONGODB_PASSWORD: kHqSinY9QFv2W4mj
+      # githubで定義したシークレット変数を使う時は、${{ secrets.XXX }}を使う。
+      # シークレット変数は、github actions内のワークフローのログでも暗号化されて見えないようになっている。
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
       PORT: 8080
     # envirinent: これ何？
     environment: testing
