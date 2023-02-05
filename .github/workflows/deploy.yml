@@ -40,7 +40,7 @@ jobs:
         # ※ steps.cache.outputs.cache-hitのように、outputされば出力を取得した際は、booleanではなく文字列になっているので注意。
         uses: actions/cache@v3
         with:
-          path: node-modules
+          path: node_modules
           key: npm-deps-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         # outputされば出力を取得した際は、booleanではなく文字列になっているので注意。
